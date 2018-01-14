@@ -1,0 +1,6 @@
+*~
+*.zip
+3DGeom/*
+!3dGeom/*.blend
+*.mat
+results/
