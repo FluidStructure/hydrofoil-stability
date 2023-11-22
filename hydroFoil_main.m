@@ -78,7 +78,7 @@ for Uinf = Uinfm
         [xcc,ycc,Ixx,Iyy,JJ,AA] = calcGeom(NACA,HALF_NPANELS,CLnodes(i));
         ind = (i-1)*6 + 1;
         Mmat(i) = Lsmat(i)*rhoM*AA;   Imat(i) = Lsmat(i)*rhoM*JJ;
-        massmat(ind,ind) = massmat(ind,ind) + Mmat(i);
+        massmat(ind  ,ind  ) = massmat(ind  ,ind  ) + Mmat(i);
         massmat(ind+1,ind+1) = massmat(ind+1,ind+1) + Mmat(i);
         massmat(ind+2,ind+2) = massmat(ind+2,ind+2) + Mmat(i);
         if i <= Nv
