@@ -21,7 +21,6 @@ nodeCoordinates=[nodeCoordinates;[-1*hsec zeros(size(hsec)) min(vsec).*ones(size
 xx=nodeCoordinates(:,1); yy=nodeCoordinates(:,2);
 zz=nodeCoordinates(:,3); numberNodes=size(nodeCoordinates,1);
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Define connectivity
 
