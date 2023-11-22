@@ -11,7 +11,18 @@ It is quasi quasi 3d
 - structure: 2d bending coupled with 1d rotation
 - fluid: 2d aerfoil slices (no 3d effects)
 
+I believe when I did this study I did actually do some validation (for vibration of a cantilever and free beam etc)... and then i also validated the fluid part (a little bit) against things like xfoil and so on... but it was definitely not an exhaustive validation... but it was enough to give me some confidence.
+
 You can validate the foil structural dynamics by removing the fluid and testing it in various configuration (cantilever beam, free beam, etc.)
+______________________________
+## Mode shapes
+
+If you want to see the mode shapes you have to set Uinfm to a single number... so you are choosing a particular point along the bifurcation diagram.
+You should then be able to change the value NMplot from 1 (what it currently is) to something else like 2 or 3 to see the higher mode shapes
+again... the file plotModes3d is probably generally re-usable in other cases.
+It simple takes the eigenvalues matrix and then plots the position of the nodes over one cycle
+You can change some parameters in plotModes3d to change the scale that it plots on... but the amplitude from the results doesn't play a role ... its just taking the eigenmodes and selecting one (from the NMplot value) and then plotting the node variation from the mean over one cycle
+The amplitude of the mode shapes is simple arbitrary and set by the value for SCF set in the plotModes3d.m file
 
 ______________________________
 ## Forcing frequency/phase-shift diagram - getfr.m
