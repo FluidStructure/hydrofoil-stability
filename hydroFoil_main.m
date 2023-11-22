@@ -1,8 +1,13 @@
-%
-% Define the 3D stiffness matrix for an inverted T-shaped hydrofoil
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 
-% Define some properties
+if ~exist('getfr.m','file')
+    addpath(genpath('lib')); % addpath(genpath('data'));
+end
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the 3D stiffness matrix for an inverted T-shaped hydrofoil
+
 NACA = '0015';          % NACA foil shape (4-digit for now)
 CL1 = 1.3;              % Chord length of the foil (at node points)
 CL2 = 0.65;
@@ -19,44 +24,33 @@ Lh = 1.435;             % Length of horizontal section (2 off)
 Nh = 8;                 % Number of nodes in each horizontal section (excluding T vertex)
 %Nh = 0;
 
-% For debugging only
-% Lv = 3;
-% Nv = 12;
-% Lh = 1;
-% Nh = 8;
+% Lv = 3; Nv = 12; Lh = 1; Nh = 8; % For debugging only
 
 % Use constant matrial properties (for now)
-% E; modulus of elasticity
-% I: second moment of area
+% E; modulus of elasticity I: second moment of area
 tmp = ones(Nv+Nh+Nh-1,1);
 %rhoM = 7500;
-rhoM = 4000;
+rhoM = 4000; E = 80e9*tmp; G = 30e9*tmp;
 %E=69e9*tmp;
 %E=110e9*tmp;
-E = 80e9*tmp;
 %G=25.5e9*tmp;
 %G=42e9*tmp;
-G = 30e9*tmp;
 
 sdamp = 100;
 
 % Define the masses
-tmp = ones(Nv+Nh+Nh,1);
-Mmat = zeros(size(tmp));
+tmp = ones(Nv+Nh+Nh,1); Mmat = zeros(size(tmp));
 %Mmat = ((0.02*0.02)*1000/4)*tmp;           % Lumped masses at the node points (for translational inertia)
 %Mmat(Nv,1) = Mmat(Nv,1)./2;
 %Imat = 0.001*tmp;                          % Moment of inertia at the node points (for rotational inertia)
 Imat = zeros(size(tmp));
 
 % Number of iterations and eigenmodes to return
-numits = 300;
-numeigs = 20;
-
 % Number of the eigenmode to plot
-NMplot = 1;
+numits = 300; numeigs = 20; NMplot = 1; 
 
-%------------------------
-% DO NOT MODIFY BELOW HERE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DO NOT MODIFY BELOW HERE
 %------------------------
 cntr = 1;
 for Uinf = Uinfm
