@@ -3,7 +3,12 @@
 % Define the 3D stiffness matrix for an inverted T-shaped hydrofoil
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% generation of coordinates and connectivities
+%% Define the foil chord length
+
+CLv = linspace(CL1,CL2,Nv); CLh = linspace(CL1,CL2,Nh+1);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% generation of coordinates
 
 vsec = linspace(0,-1*Lv,Nv)';
 hsec = linspace(0,Lh,(Nh+1))';hsec(1) = [];
@@ -16,10 +21,6 @@ nodeCoordinates=[nodeCoordinates;[-1*hsec zeros(size(hsec)) min(vsec).*ones(size
 xx=nodeCoordinates(:,1); yy=nodeCoordinates(:,2);
 zz=nodeCoordinates(:,3); numberNodes=size(nodeCoordinates,1);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Define the foil chord length
-
-CLv = linspace(CL1,CL2,Nv); CLh = linspace(CL1,CL2,Nh+1);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Define connectivity
