@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Initialise
 
-close all
+clear; close all
 
 if ~exist('getfr.m','file')
     addpath(genpath('lib')); % addpath(genpath('data'));
@@ -59,7 +59,7 @@ tmp = ones(Nv+Nh+Nh,1); Mmat = zeros(size(tmp)); Imat = zeros(size(tmp));
 numits = 300; numeigs = 20; NMplot = 1; 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% DO NOT MODIFY BELOW HERE
+%% main code
 
 stiffness_main % 3D stiffness matrix for an inverted T-shaped hydrofoil
 
@@ -77,8 +77,7 @@ for Uinf = Uinfm
     for i = 1:(Nv+Nh+Nh)
         [xcc,ycc,Ixx,Iyy,JJ,AA] = calcGeom(NACA,HALF_NPANELS,CLnodes(i));
         ind = (i-1)*6 + 1;
-        Mmat(i) = Lsmat(i)*rhoM*AA;
-        Imat(i) = Lsmat(i)*rhoM*JJ;
+        Mmat(i) = Lsmat(i)*rhoM*AA;   Imat(i) = Lsmat(i)*rhoM*JJ;
         massmat(ind,ind) = massmat(ind,ind) + Mmat(i);
         massmat(ind+1,ind+1) = massmat(ind+1,ind+1) + Mmat(i);
         massmat(ind+2,ind+2) = massmat(ind+2,ind+2) + Mmat(i);
@@ -106,9 +105,7 @@ for Uinf = Uinfm
 
     %------------------------
     % Take out the rows and columns with zero inertia (static condensation)
-    nc = size(massmat,1)./6;
-    indmat = [];
-    invindmat = [];
+    nc = size(massmat,1)./6; indmat = []; invindmat = [];
     for i = 1:size(massmat,1)
         if sum(massmat(:,i)) == 0
             indmat = [indmat,i];
@@ -132,19 +129,16 @@ for Uinf = Uinfm
     % Reduce to a set of first order differential equations
     %
     % eta_ddot = A*eta_dot - D*eta
-    invM = inv(mass);
-    A = invM*damp;
-    D = invM*stiff;
+    invM = inv(mass); A = invM*damp;  D = invM*stiff;
+    %A = damp/mass;  D = stiff/mass; % same soln, but mode plots different!
 
     % Construct the first order set of equations
     H = [zeros(size(A)) eye(size(A));D A];
 
     %----------------------
     % Solve the eigenvalue problem
-%     [Ve,De] = eig(H);
-    opts.maxit = numits;
-    opts.disp = 0;
-    opts.tol = eps;
+
+    opts.maxit = numits; opts.disp = 0; opts.tol = eps;
     if cntr == 1
         [Ve,De] = eigs(H,numeigs,0+0*i,opts);
     else
@@ -165,20 +159,25 @@ for Uinf = Uinfm
 
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% plot
+
 figure;
 plot(Uinfm,real(evalsmat([2:size(evalsmat,1)],:)),'k.');
 grid
-xlabel('Foil speed (m/s)')
-ylabel('Real part of eigenvalue')
+xlabel('Foil speed (m/s)'); ylabel('Real part of eigenvalue')
 
 figure;
 plot(Uinfm,imag(evalsmat([2:size(evalsmat,1)],:)),'k.');
 grid
-xlabel('Foil speed (m/s)')
-ylabel('Imaginary part of eigenvalue')
+xlabel('Foil speed (m/s)'); ylabel('Imaginary part of eigenvalue')
 
 % Plot a bode diagram and first mode shape if the length of Uinfm is 1
 if (length(Uinfm)==1)
     [G] = getfr(Nv-1,1,Nv-1,1,H,0.1,1000,500,numberNodes,invindmat);
     plotModes3d(0,NMplot,De,Ve,nodeCoordinates,invindmat);
 end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
