@@ -1,21 +1,20 @@
 ______________________________
-## Hydroelastic Stability Analysis of an Inverted T Hydrofoil
+# Hydroelastic Stability Analysis of an Inverted T Hydrofoil
 
 Matlab/Octave code for the calculation of Eignemodes / Eigenvectors of an inverted "T" hydrofoil at high speed.
 ______________________________
-# description
+## description
 
 This code uses a lumped-mass Finite Element Method tightly coupled with a Potential flow solution for the fluid in order to calculate the resonance frequency for linear perturbations to the foil while moving at high speed through the water.
 
-quasi quasi 3d
+It is quasi quasi 3d
 - structure: 2d bending coupled with 1d rotation
 - fluid: 2d aerfoil slices (no 3d effects)
-______________________________
 
-you can validate the foil structural dynamics by removing the fluid and testing it in various configuration (cantilever beam, free beam, etc.)
+You can validate the foil structural dynamics by removing the fluid and testing it in various configuration (cantilever beam, free beam, etc.)
 
 ______________________________
-#Forcing frequency/phase-shift diagram - getfr.m
+## Forcing frequency/phase-shift diagram - getfr.m
 
 I think it is just a pretty standard Bode diagram.
 Its plotting the frequency response of the FSI system as a whole.
