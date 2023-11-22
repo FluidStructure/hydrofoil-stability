@@ -1,23 +1,28 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+% Hydroelastic Stability Analysis of an Inverted T Hydrofoil
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Initialise
 
 if ~exist('getfr.m','file')
     addpath(genpath('lib')); % addpath(genpath('data'));
 end
+
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Define the 3D stiffness matrix for an inverted T-shaped hydrofoil
+%% data
 
 NACA = '0015';          % NACA foil shape (4-digit for now)
 CL1 = 1.3;              % Chord length of the foil (at node points)
 CL2 = 0.65;
 %CL1 = 0.2;CL2=0.2;
 HALF_NPANELS = 60;      % Half the number of panels for the NACA foil
+
 rho = 1000;             % Density of the water (kg/m3)
 Uinfm = [0:0.1:40];    % Mean flow velocity (m/s)
 Uinfm = 5;
 
-% Define the geometry
 Lv = 3.22;              % Length of vertical section
 Nv = 12;                % Number of nodes in vertical section (including T vertex)
 Lh = 1.435;             % Length of horizontal section (2 off)
@@ -39,11 +44,12 @@ rhoM = 4000; E = 80e9*tmp; G = 30e9*tmp;
 sdamp = 100;
 
 % Define the masses
-tmp = ones(Nv+Nh+Nh,1); Mmat = zeros(size(tmp));
-%Mmat = ((0.02*0.02)*1000/4)*tmp;           % Lumped masses at the node points (for translational inertia)
+tmp = ones(Nv+Nh+Nh,1); Mmat = zeros(size(tmp)); Imat = zeros(size(tmp));
+% Lumped masses at the node points (for translational inertia)
+%Mmat = ((0.02*0.02)*1000/4)*tmp;
 %Mmat(Nv,1) = Mmat(Nv,1)./2;
-%Imat = 0.001*tmp;                          % Moment of inertia at the node points (for rotational inertia)
-Imat = zeros(size(tmp));
+% Moment of inertia at the node points (for rotational inertia)
+%Imat = 0.001*tmp;
 
 % Number of iterations and eigenmodes to return
 % Number of the eigenmode to plot
@@ -51,7 +57,9 @@ numits = 300; numeigs = 20; NMplot = 1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% DO NOT MODIFY BELOW HERE
-%------------------------
+
+% Define the 3D stiffness matrix for an inverted T-shaped hydrofoil
+
 cntr = 1;
 for Uinf = Uinfm
     disp(['Uinf = ' num2str(Uinf)]);
@@ -125,19 +133,15 @@ for Uinf = Uinfm
     yce=zeros(size(E));
     for i = 1:numberElements
         [xcc,ycc,Ixx,Iyy,JJ,AA] = calcGeom(NACA,HALF_NPANELS,CLe(i));
-        xce(i) = xcc;
-        yce(i) = ycc;
-        Iy(i) = Ixx;
-        Iz(i) = Iyy;
-        J(i) = JJ;
-        Amat(i) = AA;
+        xce(i) = xcc; yce(i) = ycc;
+        Iy(i) = Ixx;  Iz(i) = Iyy;
+        J(i) = JJ;  Amat(i) = AA;
     end
 
     % Amat = Amat + (0.02*0.02);
     % Iy = Iy + 100*0.02*(0.02^3)/12;
     % Iz = Iz + 0.02*(0.02^3)/12;
     % J = J + 100;
-
 
     %------------------------
     % Generate the stiffness, mass and damping matix
