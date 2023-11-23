@@ -1,4 +1,4 @@
-function [] = plotModes3d(dot,N,De,Ve,nodeCoordinates,invindmat)
+function [] = plotModes3d(dot,N,De,Ve,nodeCoordinates,invindmat,dims)
 
 %
 % Plots the mode shape for all translational directions in a 3dplot for
@@ -85,6 +85,7 @@ for tt = tmat
     c = c + 1;
 end
 hold off;
-axis([-2 2 -2 2 -4 0])
+axis([-dims.Lh dims.Lh -dims.Lh dims.Lh -dims.Lv 0])
+%axis([-2 2 -2 2 -4 0])
 grid;rotate3d;
 

@@ -16,7 +16,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% data
 
-dataflg=0;
+dataflg=1;
 
 switch dataflg
     case{0}; data_orig;
@@ -40,6 +40,7 @@ for Uinf = Uinfm
     fsi_main % couple fluid and structure & solve system
 
     cntr = cntr + 1;
+    % bugs for loop: G
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

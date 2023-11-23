@@ -79,7 +79,10 @@ De = diag(De)
 
 % Sort the results
 DeR = real(De); DeI = imag(De);
-[DeR,I] = sort(DeR,'descend'); DeI = DeI(I,:);
+switch dataflg
+    case{0};[DeR,I] = sort(    DeR ,'descend'); DeI = DeI(I,:);
+    case{1};[DeI,I] = sort(abs(DeI),'ascend');  DeR = DeR(I,:);
+end
 DeS = complex(DeR,DeI);
 
 if cntr == 1

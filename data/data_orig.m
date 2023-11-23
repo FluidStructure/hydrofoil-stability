@@ -40,4 +40,6 @@ Mmat = zeros(size(tmp)); Imat = zeros(size(tmp));
 % Moment of inertia at the node points (for rotational inertia)
 %Imat = 0.001*tmp;
 
+dims.Lv=Lv; dims.Lh=Lh;
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
