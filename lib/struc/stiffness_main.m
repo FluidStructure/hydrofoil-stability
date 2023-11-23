@@ -27,11 +27,9 @@ zz=nodeCoordinates(:,3); numberNodes=size(nodeCoordinates,1);
 NEv = Nv - 1;   % Number of elements in vertical section
 NEh = Nh;       % Number of elements in each horizontal section
 ec = 1;
+elementNodes = zeros((NEv + 2*NEh),2); CLe = zeros((NEv + 2*NEh),1);
 
-% Vertical section
-elementNodes = zeros((NEv + 2*NEh),2);
-CLe = zeros((NEv + 2*NEh),1);
-for i = 1:NEv
+for i = 1:NEv % Vertical section
     elementNodes(ec,[1 2])=[ec ec+1];
     CLe(ec,1) = (CLv(ec) + CLv(ec+1))/2;
     ec = ec + 1;

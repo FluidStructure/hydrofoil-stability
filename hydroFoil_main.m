@@ -61,12 +61,12 @@ numits = 300; numeigs = 20; NMplot = 1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% main code
 
-stiffness_main % 3D stiffness matrix for an inverted T-shaped hydrofoil
-
 cntr = 1;
 for Uinf = Uinfm
     disp(['Uinf = ' num2str(Uinf)]);
-   
+
+    stiffness_main % 3D stiffness matrix for an inverted T-shaped hydrofoil
+
     massmat = zeros(size(stiffness));  % Initialize matrices
     Hmass = massmat; Hdamp = Hmass; Hstif = Hmass;
 
@@ -91,17 +91,17 @@ for Uinf = Uinfm
     %------------------------
     % Add hydrodynamic integrals to the equations
     %Hdamp = Hdamp*0;    % Debugging only
-    orgmass = massmat;   % Debugging only
-    massmat = massmat - Hmass;
-    damping = damping + Hdamp;
+    %orgmass   = massmat;   % Debugging only
+    massmat   = massmat   - Hmass;
+    damping   = damping   + Hdamp;
     stiffness = stiffness + Hstif;
 
     %------------------------
     % Apply the boundary conditions (all displacements and rotation of node 1 = 0)
-    orgstiff = stiffness;
-    massmat([1:6],:) = [];massmat(:,[1:6]) = [];
-    damping([1:6],:) = [];damping(:,[1:6]) = [];
-    stiffness([1:6],:) = [];stiffness(:,[1:6]) = [];
+    %orgstiff = stiffness;   % Debugging only
+    massmat  ([1:6],:) = []; massmat  (:,[1:6]) = [];
+    damping  ([1:6],:) = []; damping  (:,[1:6]) = [];
+    stiffness([1:6],:) = []; stiffness(:,[1:6]) = [];
 
     %------------------------
     % Take out the rows and columns with zero inertia (static condensation)
@@ -114,16 +114,15 @@ for Uinf = Uinfm
         end
     end
 
-    % sA*theta + sB*x = 0
-    % SO: theta = inv(sA)*(-1*sB)*x
-    kcc = stiffness(invindmat,invindmat);
-    kco = stiffness(invindmat,indmat);
-    kcot = stiffness(indmat,invindmat);
-    ki = stiffness(indmat,indmat);
+    % sA*theta + sB*x = 0... SO: theta = inv(sA)*(-1*sB)*x
+    kcc  = stiffness(invindmat,invindmat);
+    kco  = stiffness(invindmat,indmat   );
+    kcot = stiffness(indmat   ,invindmat);
+    ki   = stiffness(indmat   ,indmat   );
 
     stiff = kcc - kco*(inv(ki)*kcot);
-    damp = damping(invindmat,invindmat);
-    mass = massmat(invindmat,invindmat);
+    damp  = damping(invindmat,invindmat);
+    mass  = massmat(invindmat,invindmat);
 
     %---------------------
     % Reduce to a set of first order differential equations
@@ -144,32 +143,29 @@ for Uinf = Uinfm
     else
         [Ve,De] = eigs(H,numeigs,min(abs(imag(evalsmat([2:size(evalsmat,1)],cntr-1)))),opts);
     end
-    
     De = diag(De)
+
     % Sort the results
-    DeR = real(De);DeI=imag(De);
-    [DeR,I] = sort(DeR,'descend');DeI = DeI(I,:);
+    DeR = real(De); DeI = imag(De);
+    [DeR,I] = sort(DeR,'descend'); DeI = DeI(I,:);
     DeS = complex(DeR,DeI);
     
     if cntr == 1
         evalsmat = zeros(size(DeS,1)+1,size(Uinfm,2));
     end
     evalsmat(:,cntr) = [Uinf;DeS];
-    cntr = cntr + 1;
-
+    cntr = cntr + 1; clear i
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% plot
 
 figure;
-plot(Uinfm,real(evalsmat([2:size(evalsmat,1)],:)),'k.');
-grid
+plot(Uinfm,real(evalsmat([2:size(evalsmat,1)],:)),'k.'); grid
 xlabel('Foil speed (m/s)'); ylabel('Real part of eigenvalue')
 
 figure;
-plot(Uinfm,imag(evalsmat([2:size(evalsmat,1)],:)),'k.');
-grid
+plot(Uinfm,imag(evalsmat([2:size(evalsmat,1)],:)),'k.'); grid
 xlabel('Foil speed (m/s)'); ylabel('Imaginary part of eigenvalue')
 
 % Plot a bode diagram and first mode shape if the length of Uinfm is 1

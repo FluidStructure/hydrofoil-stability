@@ -39,11 +39,13 @@ end
 %% Hydrodynamic loading of the horizontal section
 
 if Nh > 0 % First the mid-section (nvth node)
-    Ls = (Lh./Nh);
-    CL = CL1;
+    Ls = (Lh./Nh);   CL = CL1;
+
     [xc,yc] = calcGeom(NACA,HALF_NPANELS,CL);
+    
     [F] = hydroIntegrals(xc,yc,CL,NACA,HALF_NPANELS,rho,Uinf,Ls);
     %F = F.*0;   % Debugging only
+
     [Hmass,Hdamp,Hstif] = addHydroIntegralsHorizontal(Hmass,Hdamp,Hstif,F,i);
     
     for i = (Nv+1):(Nv+Nh+Nh) % Now for the outlying nodes
