@@ -10,12 +10,11 @@ CLv = linspace(CL1,CL2,Nv); CLh = linspace(CL1,CL2,Nh+1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% generation of coordinates
 
-vsec = linspace(0,-1*Lv,Nv)';
-hsec = linspace(0,Lh,(Nh+1))';hsec(1) = [];
+vsec = linspace(0,-1*Lv,Nv)'; hsec = linspace(0,Lh,(Nh+1))'; hsec(1) = [];
 % Coordinates: Z = vertical, X = horizontal (side<->side), Y = for<->aft
 nodeCoordinates=[zeros(size(vsec)) zeros(size(vsec)) vsec];
 %nodeCoordinates=[-1*vsec zeros(size(vsec)) zeros(size(vsec))];      % For debugging only
-nodeCoordinates=[nodeCoordinates;[hsec zeros(size(hsec)) min(vsec).*ones(size(hsec))]];
+nodeCoordinates=[nodeCoordinates;[   hsec zeros(size(hsec)) min(vsec).*ones(size(hsec))]];
 nodeCoordinates=[nodeCoordinates;[-1*hsec zeros(size(hsec)) min(vsec).*ones(size(hsec))]];
 
 xx=nodeCoordinates(:,1); yy=nodeCoordinates(:,2);
@@ -26,8 +25,7 @@ zz=nodeCoordinates(:,3); numberNodes=size(nodeCoordinates,1);
 
 NEv = Nv - 1;   % Number of elements in vertical section
 NEh = Nh;       % Number of elements in each horizontal section
-ec = 1;
-elementNodes = zeros((NEv + 2*NEh),2); CLe = zeros((NEv + 2*NEh),1);
+ec = 1; elementNodes = zeros((NEv+2*NEh),2); CLe = zeros((NEv+2*NEh),1);
 
 for i = 1:NEv % Vertical section
     elementNodes(ec,[1 2])=[ec ec+1];
@@ -36,8 +34,7 @@ for i = 1:NEv % Vertical section
 end
 ecv = ec - 1;
 if Nh > 0
-    % Horizontal element #1
-    elementNodes(ec,[1 2])=[ec+1 NEv+1];
+    elementNodes(ec,[1 2])=[ec+1 NEv+1];    % Horizontal element #1
     CLe(ec) = (CLh(1) + CLh(2))/2;
     ec = ec + 1;
     for i = 1:(NEh-1)
@@ -46,8 +43,7 @@ if Nh > 0
         ec = ec + 1;
     end
     ecv = ec - 1;
-    % Horizontal element #2
-    elementNodes(ec,[1 2])=[ec+1 NEv+1];
+    elementNodes(ec,[1 2])=[ec+1 NEv+1];    % Horizontal element #2
     CLe(ec) = (CLh(1) + CLh(2))/2;
     ec = ec + 1;
     for i = 1:(NEh-1)

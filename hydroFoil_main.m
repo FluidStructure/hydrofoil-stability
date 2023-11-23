@@ -31,31 +31,28 @@ Nv = 12;                % Number of nodes in vertical section (including T verte
 Lh = 1.435;             % Length of horizontal section (2 off)
 Nh = 8;                 % Number of nodes in each horizontal section (excluding T vertex)
 %Nh = 0;
+tmp = ones(Nv+Nh+Nh-1,1);
 
 % Lv = 3; Nv = 12; Lh = 1; Nh = 8; % For debugging only
 
 % Use constant matrial properties (for now)
 % E; modulus of elasticity I: second moment of area
-tmp = ones(Nv+Nh+Nh-1,1);
-%rhoM = 7500;
 rhoM = 4000; E = 80e9*tmp; G = 30e9*tmp;
-%E=69e9*tmp;
-%E=110e9*tmp;
-%G=25.5e9*tmp;
-%G=42e9*tmp;
+%rhoM = 7500;
+%E=69e9*tmp; %E=110e9*tmp;
+%G=25.5e9*tmp; %G=42e9*tmp;
 
 sdamp = 100;
 
 % Define the masses
-tmp = ones(Nv+Nh+Nh,1); Mmat = zeros(size(tmp)); Imat = zeros(size(tmp));
+Mmat = zeros(size(tmp)); Imat = zeros(size(tmp));
 % Lumped masses at the node points (for translational inertia)
 %Mmat = ((0.02*0.02)*1000/4)*tmp;
 %Mmat(Nv,1) = Mmat(Nv,1)./2;
 % Moment of inertia at the node points (for rotational inertia)
 %Imat = 0.001*tmp;
 
-% Number of iterations and eigenmodes to return
-% Number of the eigenmode to plot
+% Number of iterations and eigenmodes to return & the eigenmode to plot
 numits = 300; numeigs = 20; NMplot = 1; 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -154,7 +151,7 @@ for Uinf = Uinfm
         evalsmat = zeros(size(DeS,1)+1,size(Uinfm,2));
     end
     evalsmat(:,cntr) = [Uinf;DeS];
-    cntr = cntr + 1; clear i
+    cntr = cntr + 1;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
