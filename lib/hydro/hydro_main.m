@@ -3,26 +3,21 @@
 % Generate the hydrodynamic integrals for each node
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% initialise
 
-if Nh < 1
-    CLnodes = CLv';
-else
-    CLnodes = [CLv';CLh(2:Nh+1)';CLh(2:Nh+1)'];
-end
+Hmass = zeros(size(stiffness)); Hdamp = Hmass; Hstif = Hmass;
 
-Lsmat = zeros(Nv+Nh+Nh,1);
+if Nh < 1; CLnodes = CLv';
+else;      CLnodes = [CLv';CLh(2:Nh+1)';CLh(2:Nh+1)']; end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Hydrodynamic loading of the vertical section
 
+Lsmat = zeros(Nv+Nh+Nh,1);
+
 for i = 1:Nv
-    if (i == 1)||(i == Nv)
-        Ls = Lv./(2*(Nv-1));
-        Lsmat(i,1) = Ls;
-    else
-        Ls = Lv./(Nv-1);
-        Lsmat(i,1) = Ls;
-    end
+    if (i == 1)||(i == Nv);  Ls = Lv./(2*(Nv-1));  Lsmat(i,1) = Ls;
+    else;                    Ls = Lv./(Nv-1);      Lsmat(i,1) = Ls;   end
     CL = CLnodes(i);
     % Calculate the centroid of the foil
     [xc,yc] = calcGeom(NACA,HALF_NPANELS,CL);
@@ -50,16 +45,15 @@ if Nh > 0 % First the mid-section (nvth node)
     
     for i = (Nv+1):(Nv+Nh+Nh) % Now for the outlying nodes
         if (i == Nv + Nh)||(i == Nv + Nh + Nh)
-            Ls = (Lh./(2*Nh));
-            Lsmat(i,1) = Ls;
-        else
-            Ls = Lh./Nh;
-            Lsmat(i,1) = Ls;
-        end
+              Ls = (Lh./(2*Nh));   Lsmat(i,1) = Ls;
+        else; Ls = Lh./Nh;         Lsmat(i,1) = Ls;   end
         CL = CLnodes(i);
+
         [xc,yc] = calcGeom(NACA,HALF_NPANELS,CL);
+
         [F] = hydroIntegrals(xc,yc,CL,NACA,HALF_NPANELS,rho,Uinf,Ls);
         %F = F.*0;   % Debugging only
+
         [Hmass,Hdamp,Hstif] = addHydroIntegralsHorizontal(Hmass,Hdamp,Hstif,F,i);
     end
 end
