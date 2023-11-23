@@ -30,7 +30,7 @@ Lv = 3.22;              % Length of vertical section
 Nv = 12;                % Number of nodes in vertical section (including T vertex)
 Lh = 1.435;             % Length of horizontal section (2 off)
 Nh = 8;                 % Number of nodes in each horizontal section (excluding T vertex)
-%Nh = 0;
+Nh = 0;
 tmp = ones(Nv+Nh+Nh-1,1);
 
 % Lv = 3; Nv = 12; Lh = 1; Nh = 8; % For debugging only
@@ -166,10 +166,7 @@ plot(Uinfm,imag(evalsmat([2:size(evalsmat,1)],:)),'k.'); grid
 xlabel('Foil speed (m/s)'); ylabel('Imaginary part of eigenvalue')
 
 % Plot a bode diagram and first mode shape if the length of Uinfm is 1
-if (length(Uinfm)==1)
-    [G] = getfr(Nv-1,1,Nv-1,1,H,0.1,1000,500,numberNodes,invindmat);
-    plotModes3d(0,NMplot,De,Ve,nodeCoordinates,invindmat);
-end
+if (length(Uinfm)==1);  plot_bode; end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
