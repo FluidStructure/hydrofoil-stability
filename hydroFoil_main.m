@@ -16,15 +16,13 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% data
 
-dataflg=1;
+% Number of iterations and eigenmodes to return & the eigenmode to plot
+dataflg=0; numits = 300; numeigs = 20; NMplot = 1; 
 
 switch dataflg
     case{0}; data_orig;
     case{1}; data_lelong;
 end
-
-% Number of iterations and eigenmodes to return & the eigenmode to plot
-numits = 300; numeigs = 20; NMplot = 1; 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% main code
@@ -55,7 +53,10 @@ plot(Uinfm,imag(evalsmat([2:size(evalsmat,1)],:)),'k.'); grid
 xlabel('Foil speed (m/s)'); ylabel('Imaginary part of eigenvalue')
 
 % Plot a bode diagram and first mode shape if the length of Uinfm is 1
-if (length(Uinfm)==1);  plot_bode; end
+if (length(Uinfm)==1)
+    plot_bode
+    plot_mode
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

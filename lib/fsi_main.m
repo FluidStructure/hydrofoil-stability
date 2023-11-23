@@ -69,21 +69,21 @@ H = [zeros(size(A)) eye(size(A));D A];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Solve the eigenvalue problem
 
-opts.maxit = numits; opts.disp = 0; opts.tol = eps;
+opts.maxit = numits; opts.disp = 0; opts.tol = eps;sigma=0+0i;
 if cntr == 1
-    [Ve,De] = eigs(H,numeigs,0+0*i,opts);
+    [Ve,De] = eigs(H,numeigs,sigma,opts);
+    %[Ve,De] = eig(H);
 else
     [Ve,De] = eigs(H,numeigs,min(abs(imag(evalsmat([2:size(evalsmat,1)],cntr-1)))),opts);
 end
-De = diag(De)
+De = diag(De); DeR = real(De); DeI = imag(De);
 
-% Sort the results
-DeR = real(De); DeI = imag(De);
-switch dataflg
+switch dataflg % Sort the results
     case{0};[DeR,I] = sort(    DeR ,'descend'); DeI = DeI(I,:);
     case{1};[DeI,I] = sort(abs(DeI),'ascend');  DeR = DeR(I,:);
 end
 DeS = complex(DeR,DeI);
+DeS(1:20,:)
 
 if cntr == 1
     evalsmat = zeros(size(DeS,1)+1,size(Uinfm,2));
