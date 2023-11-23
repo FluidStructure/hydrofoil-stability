@@ -23,7 +23,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Add hydrodynamic integrals to the equations
 
-%Hdamp = Hdamp*0;    % Debugging only
+%Hdamp     = Hdamp*0;   % Debugging only
 %orgmass   = massmat;   % Debugging only
 massmat   = massmat   - Hmass;
 damping   = damping   + Hdamp;
@@ -42,11 +42,8 @@ stiffness([1:6],:) = []; stiffness(:,[1:6]) = [];
 
 nc = size(massmat,1)./6; indmat = []; invindmat = [];
 for i = 1:size(massmat,1)
-    if sum(massmat(:,i)) == 0
-        indmat = [indmat,i];
-    else
-        invindmat = [invindmat,i];
-    end
+    if sum(massmat(:,i))==0; indmat    = [indmat   ,i];
+    else                     invindmat = [invindmat,i];  end
 end
 
 % sA*theta + sB*x = 0... SO: theta = inv(sA)*(-1*sB)*x
