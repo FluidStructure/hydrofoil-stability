@@ -17,7 +17,7 @@ end
 %% data
 
 % Number of iterations and eigenmodes to return & the eigenmode to plot
-dataflg=1; numits = 300; numeigs = 20; NMplot = 1; 
+dataflg=2; numits = 300; numeigs = 20; NMplot = 1; 
 
 switch dataflg
     case{0}; data_orig;

@@ -8,7 +8,7 @@ rho = 1e0;             % Density of the water (kg/m3)
 Uinfm = [0:0.5:20];    % Mean flow velocity (m/s)
 %Uinfm = 0;    % Mean flow velocity (m/s)
 
-NACA = '0006';          % NACA foil shape (4-digit for now)
+NACA = '0002';          % NACA foil shape (4-digit for now)
 HALF_NPANELS = 60;      % Half the number of panels for the NACA foil
 
 CL1 = 50e-3;              % Chord length of the foil (at node points)
