@@ -81,6 +81,7 @@ De = diag(De); DeR = real(De); DeI = imag(De);
 switch dataflg % Sort the results
     case{0};[DeR,I] = sort(    DeR ,'descend'); DeI = DeI(I,:);
     case{1};[DeI,I] = sort(abs(DeI),'ascend');  DeR = DeR(I,:);
+    case{2};[DeR,I] = sort(    DeR ,'descend'); DeI = DeI(I,:);
 end
 DeS = complex(DeR,DeI);
 DeS(1:20,:)

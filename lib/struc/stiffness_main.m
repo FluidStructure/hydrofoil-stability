@@ -81,6 +81,7 @@ end
 
 GDof=6*numberNodes;
 % E = ones(size(E));Amat=E;Iz=ones(size(E));Iy=100*ones(size(E));G=E;J=100*ones(size(E));
+keyboard
 [stiffness]=formStiffness3Dframe(GDof,numberElements,elementNodes,...
                                  nodeCoordinates,E,Amat,Iz,Iy,G,J);
 stiffness = stiffness*-1;
