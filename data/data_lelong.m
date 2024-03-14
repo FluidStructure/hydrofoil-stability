@@ -22,10 +22,7 @@ Nh = 0;                 % Number of nodes in each horizontal section (excluding 
 
 tmp = ones(Nv+Nh+Nh-1,1);
 
-%rhoM = 1420; E = 3.5e7*tmp; G = E*1e-1;
-%rhoM = 1420; E = 3.5e7*tmp; G = E/(2*(1+(0.35)));
 rhoM = 1420; E = 3.5e9*tmp; G = E/(2*(1+(0.35)));
-%rhoM = 1420; E = 3.5e9*tmp; G = E*1e12;
 
 sdamp = 0;
 

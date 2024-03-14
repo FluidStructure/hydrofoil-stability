@@ -17,7 +17,7 @@ end
 %% data
 
 % Number of iterations and eigenmodes to return & the eigenmode to plot
-dataflg=2; numits = 300; numeigs = 20; NMplot = 1; 
+dataflg=0; numits = 300; numeigs = 20; NMplot = 1; 
 
 switch dataflg
     case{0}; data_orig;
@@ -55,7 +55,7 @@ xlabel('Foil speed (m/s)'); ylabel('Imaginary part of eigenvalue')
 
 % Plot a bode diagram and first mode shape if the length of Uinfm is 1
 if (length(Uinfm)==1)
-    %plot_bode
+    plot_bode
     plot_mode
 end
 
